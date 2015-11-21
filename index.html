@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Squid - A squared grid.</title>
+  <style>
+    body {
+      margin: 0;
+    }
+
+    .grid {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 1000px;
+      transition: height 250ms cubic-bezier(0.77,0,0.175,1);
+    }
+
+    .grid.squid-resizing {
+      transition: none;
+    }
+
+    .grid-item {
+      background: salmon;
+      transition:
+        height 250ms cubic-bezier(0.77,0,0.175,1),
+        top 250ms cubic-bezier(0.77,0,0.175,1),
+        left 250ms cubic-bezier(0.77,0,0.175,1),
+        width 250ms cubic-bezier(0.77,0,0.175,1);
+    }
+
+    .squid-resizing .grid-item {
+      transition: none;
+    }
+
+    .squid-initialized .grid-item {
+      top: 100%;
+    }
+
+    .grid-item span {
+      position: absolute;
+      top: 45%;
+      left: 0;
+      right: 0;
+      font-family: Menlo, monospace;
+      text-align: center;
+    }
+
+    .actions {
+      position: fixed;
+      left: 0;
+      bottom: 200px;
+      right: 0;
+      text-align: center;
+    }
+
+    button {
+      padding: 5px 10px;
+      color: #fff;
+      font-size: 16px;
+      background: #444;
+      border: 2px solid #fff;
+      cursor: pointer;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+    <div class="grid-item"></div>
+  </div>
+
+  <div class="actions">
+    <button data-action-add-items>Add items</button>
+    <button data-action-add-column>Add column</button>
+    <button data-action-remove-column>Remove column</button>
+    <button data-action-gutter>New gutter</button>
+  </div>
+
+  <script src="jspm_packages/system.js"></script>
+  <script src="config.js"></script>
+  <script>
+    System.import('demo/app');
+  </script>
+
+</body>
+</html>

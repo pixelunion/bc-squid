@@ -1,0 +1,9 @@
+.DS_Store
+.stencil
+npm-debug.log
+
+jspm_packages
+node_modules
+assets/css-artifacts
+assets/js/dependency-bundle.js
+assets/js/dependency-bundle.js.map

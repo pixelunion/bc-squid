@@ -1,0 +1,28 @@
+{
+  "name": "bc-squid",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A layout library that generates perfectly squared grids.",
+  "scripts": {
+    "serve": "nodemon server.js"
+  },
+  "jspm": {
+    "main": "Squid",
+    "directories": {
+      "lib": "src"
+    },
+    "dependencies": {
+      "jquery": "github:components/jquery@^2.1.4"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.22",
+      "babel-runtime": "npm:babel-runtime@^5.8.20",
+      "core-js": "npm:core-js@^1.1.0"
+    }
+  },
+  "devDependencies": {
+    "finalhandler": "^0.4.0",
+    "nodemon": "^1.8.1",
+    "serve-static": "^1.10.0"
+  }
+}
