@@ -10,16 +10,26 @@
  * item fit in the grid.
  */
 export default class Block {
-  constructor(object, naturalSize) {
+  constructor(object, naturalSize, gravity, resistance) {
     this.object = object;
 
     this.naturalSize = naturalSize;
     this.size = Object.assign({}, this.naturalSize);
+    this.gravity = gravity;
+    this.resistance = resistance;
   }
 
   updateSizeForWidth(width) {
-    const ratio = width / this.naturalSize.width;
-    const height = Math.floor(this.naturalSize.height * ratio);
-    this.size = { width, height };
+    // Don't touch the height
+    if (this.resistance === 1) {
+      this.size = { width, height: this.naturalSize.height };
+    }
+
+    // Resize height based on new width
+    else {
+      const ratio = width / this.naturalSize.width;
+      const height = Math.floor(this.naturalSize.height * ratio);
+      this.size = { width, height };
+    }
   }
 }

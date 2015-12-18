@@ -36,12 +36,27 @@ as a percentage of the grid's width.
 ### `getSize` (optional)
 
 A function to calculate the natural size of your elements. Defaults to the
-natural size of the first img element.
+natural size of the first img element. Expects an object with `width` and
+`height` properties.
+
+### `getGravity` (optional)
+
+A function to calculate the "gravity" of your elements. This affects the
+position items are inserted into a column. Items with a lower gravity are placed
+above items with a higher gravity. Expects a number between `-1` and `1`.
+
+### `getResistance` (optional)
+
+A function to calculate the "resistance" of your elements. Elements with a
+higher resistance will be compressed less when trying to resize a column.
+Expects a number between `0` and `1`.
+
+Currently, the layout engine only takes into account a resistance of `1`, which
+will lock that element's height. All other elements will be compressed equally.
 
 ### `firstRenderClassname` (optional)
 
 The class name to add to the grid after it is rendered for the first time.
-
 
 ### `resizingClassname` (optional)
 

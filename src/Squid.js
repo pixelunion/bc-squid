@@ -11,33 +11,42 @@ function defaultGetSize(item) {
   };
 };
 
-function getSizeWrapper(sizer) {
+function defaultGetGravity(item) {
+  return 0;
+};
+
+function defaultGetResistance(item) {
+  return .5;
+}
+
+function defaultWrapper(name, implementation, defaultImplementation) {
   return (item) => {
-    let size = sizer(item);
+    let value = implementation(item);
 
-    if (size === undefined && sizer !== defaultGetSize) {
-      size = defaultGetSize(item);
+    if (value === undefined && implementation !== defaultImplementation) {
+      value = defaultImplementation(item);
     }
 
-    if (size === undefined) {
-      throw new Error('Unable to get size of item');
+    if (value === undefined) {
+      throw new Error(`Unable to get ${name} of item.`);
     }
 
-    return size;
-  }
+    return value;
+  };
 };
 
 /**
  * Layout items in a grid, with squared edges!
- *
- *
  */
 export default class Squid {
   constructor($container, options) {
     this.options = {
       columns: 2,
       gutter: 10,
+
       getSize: defaultGetSize,
+      getGravity: defaultGetGravity,
+      getResistance: defaultGetResistance,
 
       firstRenderClassname: 'squid-initialized',
       resizingClassname: 'squid-resizing',
@@ -172,8 +181,10 @@ export default class Squid {
       columns: this.options.columns,
       gutter: this.options.gutter,
 
-      // Wrap the sizer function to handle fallbacks
-      getSize: getSizeWrapper(this.options.getSize),
+      // Wrap the sizer functions to handle fallbacks
+      getSize: defaultWrapper('size', this.options.getSize, defaultGetSize),
+      getGravity: defaultWrapper('gravity', this.options.getGravity, defaultGetGravity),
+      getResistance: defaultWrapper('resistance', this.options.getResistance, defaultGetResistance),
     };
   }
 }

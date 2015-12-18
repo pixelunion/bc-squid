@@ -26,6 +26,17 @@ import Column from './Column';
  *        A function to calculate the size of an item. Expects an object with
  *        `width` and `height` properties.
  *
+ *        getGravity Function
+ *        A function to calculate the "gravity" of an item. This affects the
+ *        position items are inserted into a column. Items with a lower gravity
+ *        are placed above items with a higher gravity. Expects a number between
+ *        -1 and 1.
+ *
+ *        getResistance Function
+ *        A function to calculate the "resistance" of an item. Items with a
+ *        higher resistance will be compressed less when trying to resize a
+ *        column. Expects a number between 0 and 1.
+ *
  * @return array
  *         Layout objects contain the following properties:
  *
@@ -46,6 +57,14 @@ export default function layout(items, width, options) {
 
   if (typeof options.getSize !== 'function') {
     throw new Error('Missing option: `getSize` function to calculate size of a grid item.');
+  }
+
+  if (typeof options.getGravity !== 'function') {
+    throw new Error('Missing option: `getGravity` function to calculate size of a grid item.');
+  }
+
+  if (typeof options.getResistance !== 'function') {
+    throw new Error('Missing option: `getResistance` function to calculate size of a grid item.');
   }
 
   if (typeof width !== 'number' || width < 0) {
@@ -74,7 +93,9 @@ export default function layout(items, width, options) {
 
   for (let item of items) {
     const size = options.getSize(item);
-    blocks.push(new Block(item, size));
+    const gravity = options.getGravity(item);
+    const resistance = options.getResistance(item);
+    blocks.push(new Block(item, size, gravity, resistance));
   }
 
   // Insert blocks into columns
@@ -99,6 +120,16 @@ export default function layout(items, width, options) {
   // Compress columns
   for (let column of columns) {
     column.compress(target);
+  }
+
+  // Handle uncompressible columns
+  const tallest = columns.reduce((a, b) => {
+    return a.height > b.height ? a : b;
+  }, columns[0]);
+
+  // Compress columns
+  for (let column of columns) {
+    column.compress(tallest.height);
   }
 
   // Output
@@ -195,5 +226,5 @@ function midrangeEqualizer(columns) {
     return a.height > b.height ? a : b;
   }, columns[0]);
 
-  return (tallest.height + shortest.height) / 2;
+  return Math.floor((tallest.height + shortest.height) / 2);
 }

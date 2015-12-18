@@ -11,33 +11,70 @@ const colorize = function() {
     const $item = $(el);
     if ($item.data('color')) return;
 
-    const hue = random(0, 360);
-    const sat = random(50, 80);
-    const light = random(50, 80);
-    const color = `hsl(${hue}, ${sat}%, ${light}%)`;
+    if (!$item.hasClass('grid-item-top')) {
+      const hue = random(0, 360);
+      const sat = random(50, 80);
+      const light = random(50, 80);
+      const color = `hsl(${hue}, ${sat}%, ${light}%)`;
 
-    $item.data('color', color);
-    $item.css('background-color', color);
+      $item.data('color', color);
+      $item.css('background-color', color);
+    }
 
     const size = $item.data('size');
-    $item.html(`<span>${size.width}x${size.height}</span>`);
+    const gravity = $item.data('gravity') || 0;
+    $item.html(`<span>${size.width}x${size.height} (g:${gravity})</span>`);
   });
 };
 
 // Generate a random size for an item
 const getSize = function(item) {
-  let size = $(item).data('size');
+  const $item = $(item);
+  let size = $item.data('size');
 
   if (!size) {
+    const height = $item.hasClass('grid-item-static')
+      ? 200
+      : random(100, 500);
+
     size = {
       width: 300,
-      height: random(100, 500),
+      height,
     };
 
-    $(item).data('size', size);
+    $item.data('size', size);
   }
 
   return size;
+};
+
+const getGravity = function(item) {
+  const $item = $(item);
+  let gravity = $item.data('gravity');
+
+  if (gravity === undefined) {
+    // Float .grid-item-top items to the top
+    gravity = $item.hasClass('grid-item-top')
+      ? random(-1, 1)
+      : undefined
+    $item.data('gravity', gravity);
+  }
+
+  return gravity;
+};
+
+const getResistance = function(item) {
+  const $item = $(item);
+  let resistance = $item.data('resistance');
+
+  if (resistance === undefined) {
+    resistance = $item.hasClass('grid-item-static')
+      ? 1
+      : .5;
+    $item.data('resistance', resistance);
+  }
+
+  return resistance;
 };
 
 // App
@@ -52,6 +89,8 @@ $(() => {
     columns: columns,
     gutter: gutters[gutterIndex],
     getSize,
+    getGravity,
+    getResistance,
   });
 
   squid.add(...$('.grid-item'));
@@ -64,6 +103,11 @@ $(() => {
       const $item = $('<div>', {
         'class': 'grid-item',
       }).appendTo('.grid');
+
+      if (random(0, 20) === 0) {
+        $item.addClass('grid-item-top');
+      }
+
       squid.add($item.get(0));
     }
     squid.layout();
