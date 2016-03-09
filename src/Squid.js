@@ -19,6 +19,10 @@ function defaultGetResistance(item) {
   return .5;
 }
 
+function defaultGetVisibility(item) {
+  return $(item).is(':visible');
+}
+
 function defaultWrapper(name, implementation, defaultImplementation) {
   return (item) => {
     let value = implementation(item);
@@ -47,6 +51,7 @@ export default class Squid {
       getSize: defaultGetSize,
       getGravity: defaultGetGravity,
       getResistance: defaultGetResistance,
+      getVisibility: defaultGetVisibility,
 
       firstRenderClassname: 'squid-initialized',
       resizingClassname: 'squid-resizing',
@@ -185,6 +190,7 @@ export default class Squid {
       getSize: defaultWrapper('size', this.options.getSize, defaultGetSize),
       getGravity: defaultWrapper('gravity', this.options.getGravity, defaultGetGravity),
       getResistance: defaultWrapper('resistance', this.options.getResistance, defaultGetResistance),
+      getVisibility: defaultWrapper('visibility', this.options.getVisibility, defaultGetVisibility),
     };
   }
 }

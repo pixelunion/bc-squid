@@ -54,6 +54,12 @@ Expects a number between `0` and `1`.
 Currently, the layout engine only takes into account a resistance of `1`, which
 will lock that element's height. All other elements will be compressed equally.
 
+### `getVisibility` (optional)
+
+A function to calculate the visibility of your elements. Expects either `true`
+or `false`. If this function returns `false` for an item, that item will not be
+layed-out.
+
 ### `firstRenderClassname` (optional)
 
 The class name to add to the grid after it is rendered for the first time.

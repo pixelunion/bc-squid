@@ -92,6 +92,9 @@ export default function layout(items, width, options) {
   const blocks = [];
 
   for (let item of items) {
+    const visible = options.getVisibility(item);
+    if (!visible) continue;
+
     const size = options.getSize(item);
     const gravity = options.getGravity(item);
     const resistance = options.getResistance(item);
