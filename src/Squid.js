@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import layout from './layout';
+import layout from './Layout';
 
 function defaultGetSize(item) {
   const img = $(item).find('img').get(0);
