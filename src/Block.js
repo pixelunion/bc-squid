@@ -21,15 +21,16 @@ export default class Block {
 
   updateSizeForWidth(width) {
     // Don't touch the height
-    if (this.resistance === 1) {
-      this.size = { width, height: this.naturalSize.height };
-    }
+    // if (this.resistance === 1) {
+      // this.size = { width, height: this.naturalSize.height };
+    // }
 
     // Resize height based on new width
-    else {
+    // else {
       const ratio = width / this.naturalSize.width;
       const height = Math.floor(this.naturalSize.height * ratio);
       this.size = { width, height };
-    }
+      console.log(width, ratio, height);
+    // }
   }
 }
