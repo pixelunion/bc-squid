@@ -134,13 +134,13 @@ export default class Squid {
    *        An item to remove from the grid.
    */
   remove(...items) {
-    for (let item of items) {
+    items.forEach(item => {
       const index = this.items.indexOf(item);
 
       if (index !== -1) {
         this.items.splice(index, 1);
       }
-    }
+    });
   }
 
   /**
@@ -164,7 +164,7 @@ export default class Squid {
     );
 
     // Position blocks
-    for (let block of blocks) {
+    blocks.forEach(block => {
       $(block.object).css({
         position: 'absolute',
         top: block.top,
@@ -174,7 +174,7 @@ export default class Squid {
       });
 
       height = Math.max(height, block.top + block.height);
-    }
+    });
 
     // Update container
     this.$container.css('height', height);

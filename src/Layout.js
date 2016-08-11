@@ -91,20 +91,18 @@ export default function layout(items, width, options) {
   // Initialize blocks
   const blocks = [];
 
-  for (let item of items) {
+  items.forEach(item => {
     const visible = options.getVisibility(item);
-    if (!visible) continue;
+    if (!visible) return;
 
     const size = options.getSize(item);
     const gravity = options.getGravity(item);
     const resistance = options.getResistance(item);
     blocks.push(new Block(item, size, gravity, resistance));
-  }
+  });
 
   // Insert blocks into columns
-  for (let block of blocks) {
-    shortestColumnInserter(columns, block);
-  }
+  blocks.forEach(block => shortestColumnInserter(columns, block));
 
   // Set column widths
   setColumnWidths(columns, width, gutter);
@@ -113,17 +111,13 @@ export default function layout(items, width, options) {
   setColumnPositions(columns, gutter);
 
   // Set initial item positions
-  for (let column of columns) {
-    column.positionBlocks();
-  }
+  columns.forEach(column => column.positionBlocks());
 
   // Get target height
   const target = midrangeEqualizer(columns);
 
   // Compress columns
-  for (let column of columns) {
-    column.compress(target);
-  }
+  columns.forEach(column => column.compress(target));
 
   // Handle uncompressible columns
   const tallest = columns.reduce((a, b) => {
@@ -131,25 +125,22 @@ export default function layout(items, width, options) {
   }, columns[0]);
 
   // Compress columns
-  for (let column of columns) {
-    column.compress(tallest.height);
-  }
+  columns.forEach(column => column.compress(tallest.height));
 
   // Output
   const output = [];
 
-  for (let column of columns) {
-    for (let block of column.blocks) {
+  columns.forEach(column => {
+    column.blocks.forEach(block => {
       output.push({
         object: block.object,
-
         top: block.top,
         left: block.left,
         width: block.size.width,
         height: block.size.height,
       });
-    }
-  }
+    });
+  });
 
   return output;
 }

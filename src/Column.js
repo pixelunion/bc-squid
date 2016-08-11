@@ -39,12 +39,12 @@ export default class Column {
   positionBlocks() {
     let top = 0;
 
-    for (let block of this.blocks) {
+    this.blocks.forEach(block => {
       block.updateSizeForWidth(this.width);
       block.top = top;
       block.left = this.left;
       top += block.size.height + this._gutter;
-    }
+    });
 
     this.height = top;
   }
@@ -77,10 +77,10 @@ export default class Column {
     // Update block positions
     let top = 0;
 
-    for (let block of this.blocks) {
+    this.blocks.forEach(block => {
       block.top = top;
       top += block.size.height + this._gutter;
-    }
+    });
   }
 
   _compressibleBlocks() {
